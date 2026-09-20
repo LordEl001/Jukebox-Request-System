@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidSong(data) {
+      return data.keys().hasAll(['id', 'artist_name', 'song_title']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.artist_name is string && data.artist_name.size() <= 200 &&
+        data.song_title is string && data.song_title.size() <= 200;
+    }
+
+    function isValidQueueItem(data) {
+      return data.keys().hasAll(['queue_id', 'user_name', 'song_id', 'timestamp', 'status']) &&
+        data.queue_id is string && data.queue_id.size() <= 128 &&
+        data.user_name is string && data.user_name.size() <= 100 &&
+        data.song_id is string && data.song_id.size() <= 128 &&
+        data.timestamp is number &&
+        data.status is string && data.status.size() <= 30;
+    }
+
+    function isValidComment(data) {
+      return data.keys().hasAll(['id', 'user_name', 'message', 'timestamp']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.user_name is string && data.user_name.size() <= 100 &&
+        data.message is string && data.message.size() <= 1000 &&
+        data.timestamp is number;
+    }
+
+    // Catalog songs collection
+    match /songs/{songId} {
+      allow read: if true;
+      allow create, update: if isValidId(songId) && isValidSong(incoming());
+      allow delete: if isValidId(songId);
+    }
+
+    // Live jukebox queue collection
+    match /queue/{queueId} {
+      allow read: if true;
+      allow create, update: if isValidId(queueId) && isValidQueueItem(incoming());
+      allow delete: if isValidId(queueId);
+    }
+
+    // Patron comments collection
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create, update: if isValidId(commentId) && isValidComment(incoming());
+      allow delete: if isValidId(commentId);
+    }
+
+    // App settings collection (e.g. host config)
+    match /settings/{docId} {
+      allow read, write: if isValidId(docId);
+    }
+
+    // Connection test document
+    match /test/{docId} {
+      allow read: if true;
+    }
+  }
+}

@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+html, body {
+  background-color: #050505;
+  color: #f4f4f4;
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+/* Prevent double-tap zoom across clickable elements while preserving smooth scrolling */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/*
+ * PREVENT MOBILE / IOS SAFARI AUTOMATIC ZOOM ON INPUT FOCUS:
+ * iOS Safari automatically zooms in the viewport when any input, textarea, or select
+ * with font-size < 16px is focused. Enforcing 16px font-size on mobile inputs
+ * prevents this automatic screen zoom entirely.
+ */
+@media screen and (max-width: 768px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+#root {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #050505;
+}
+
+/* Hide scrollbars globally across all elements while keeping scrollability */
+* {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none !important; /* Chrome, Safari, Opera */
+  width: 0 !important;
+  height: 0 !important;
+}
+
+@layer utilities {
+  /* Hide scrollbar utility class fallback */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 12s linear infinite;
+}
+

@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "songs": {
+      "title": "Songs",
+      "description": "Song catalog available in the jukebox",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "artist_name": { "type": "string" },
+        "song_title": { "type": "string" },
+        "duration": { "type": "string" },
+        "trackNumber": { "type": "number" }
+      },
+      "required": ["id", "artist_name", "song_title"]
+    },
+    "queue": {
+      "title": "Queue",
+      "description": "Live jukebox song requests queue",
+      "type": "object",
+      "properties": {
+        "queue_id": { "type": "string" },
+        "user_name": { "type": "string" },
+        "song_id": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "status": { "type": "string" },
+        "note": { "type": "string" }
+      },
+      "required": ["queue_id", "user_name", "song_id", "timestamp", "status"]
+    },
+    "comments": {
+      "title": "Comments",
+      "description": "Patron feedback and shoutouts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "user_name": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "tag": { "type": "string" }
+      },
+      "required": ["id", "user_name", "message", "timestamp"]
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "App settings including host password pin and venue location",
+      "type": "object",
+      "properties": {
+        "pin": { "type": "string" },
+        "venue_name": { "type": "string" },
+        "updatedAt": { "type": "number" }
+      }
+    }
+  },
+  "firestore": {
+    "/songs/{songId}": {
+      "schema": "songs",
+      "description": "Catalog of available jukebox songs"
+    },
+    "/queue/{queueId}": {
+      "schema": "queue",
+      "description": "Queue items for requested songs"
+    },
+    "/comments/{commentId}": {
+      "schema": "comments",
+      "description": "Patron comments and shoutouts"
+    },
+    "/settings/{settingId}": {
+      "schema": "settings",
+      "description": "App configuration including host password PIN"
+    }
+  }
+}

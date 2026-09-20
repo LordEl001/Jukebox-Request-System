@@ -1,0 +1,8 @@
+{
+  "name": "Jukebox Request System",
+  "description": "Live queue and song request app with Patron and Host views",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
